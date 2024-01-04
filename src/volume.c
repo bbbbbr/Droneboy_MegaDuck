@@ -353,26 +353,43 @@ void updateSweepVolume(int volume) {
     //afaikt this is the least clicky way to decrease volume
       __asm
         // Mega Duck has nybbles swapped for NR12, NR22, NR42 audio envelope registers
-        #ifdef MEGADUCK 
+        push af
+        #ifdef MEGADUCK
             ld a, #0x80
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
+            ldh (#0xFF21),a
         #else
             ld a, #0x08
-        #endif   
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
-        ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+            ldh (#0xFF12),a
+        #endif
+        pop  af
       __endasm;
       sweep_volume--;
     }
@@ -390,29 +407,46 @@ void updateSquareVolume(int volume) {
   } else if (volume < square_volume) {
     while (square_volume != volume) {
     //afaikt this is the least clicky way to decrease volume
-      // FF17 = NR22_REG  
-      __asm 
+      // FF17 = NR22_REG
+      __asm
         // Mega Duck has nybbles swapped for NR12, NR22, NR42 audio envelope registers
-        #ifdef MEGADUCK 
+        push  af
+        #ifdef MEGADUCK
             ld a, #0x80
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
+            ldh (#0xFF27),a
         #else
             ld a, #0x08
-        #endif   
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
-        ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+            ldh (#0xFF17),a
+        #endif
+        pop  af
       __endasm;
       square_volume--;
     }
