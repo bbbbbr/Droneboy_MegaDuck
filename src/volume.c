@@ -472,7 +472,7 @@ void updateWaveToBeLoaded(int volume, int sample_index) {
 void loadSquareWave(int volume, int sample_index) {
   unsigned char *dst = &waveToBeLoaded[0];
   unsigned char *dst2 = &waveToBeLoaded[8];
-  unsigned char *src = &squareSamples[sample_index*8]; // points to selected duty
+  const unsigned char *src = &squareSamples[sample_index*8]; // points to selected duty
   unsigned char length = 8;
   while (length--) {
     unsigned char tmp = *src;
@@ -487,7 +487,7 @@ void loadSquareWave(int volume, int sample_index) {
 void loadSawWave(int volume) {
   unsigned char *dst = &waveToBeLoaded[0];
   unsigned char *dst2 = &waveToBeLoaded[8];
-  unsigned char *src = &sawSamples[volume*8]; // Create pointer to the waveform
+  const unsigned char *src = &sawSamples[volume*8]; // Create pointer to the waveform
   unsigned char length = 8;
   while (length--) {
     *dst++ = *src;
@@ -499,7 +499,7 @@ void loadSawWave(int volume) {
 void loadTriangleWave(int volume) {
   unsigned char *dst = &waveToBeLoaded[0];
   unsigned char *dst2 = &waveToBeLoaded[8];
-  unsigned char *src = &triangleSamples[volume*8]; // Create pointer to the waveform
+  const unsigned char *src = &triangleSamples[volume*8]; // Create pointer to the waveform
   unsigned char length = 8;
   while (length--) {
     *dst++ = *src;
@@ -511,7 +511,7 @@ void loadTriangleWave(int volume) {
 void loadSineWave(int volume) {
   unsigned char *dst = &waveToBeLoaded[0];
   unsigned char *dst2 = &waveToBeLoaded[8];
-  unsigned char *src = &sineSamples[volume*8]; // Create pointer to the waveform
+  const unsigned char *src = &sineSamples[volume*8]; // Create pointer to the waveform
   unsigned char length = 8;
   while (length--) {
     *dst++ = *src;
@@ -523,7 +523,7 @@ void loadSineWave(int volume) {
 void loadRampWave(int volume) {
   unsigned char *dst = &waveToBeLoaded[0];
   unsigned char *dst2 = &waveToBeLoaded[8];
-  unsigned char *src = &sawSamples[((volume+1)*8)-1]; // Create pointer to the waveform
+  const unsigned char *src = &sawSamples[((volume+1)*8)-1]; // Create pointer to the waveform
   unsigned char length = 8;
   while (length--) {
     unsigned char tmp = *src;
