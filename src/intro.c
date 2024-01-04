@@ -1,12 +1,14 @@
 #include <gb/gb.h>
 #include "tilesandbackgrounds.h"
 
+#include "plat_sound.h"
+
 // Intro logo roll
 void intro(void) {
   wait_vbl_done();
   NR52_REG = 0x80;
   NR11_REG = 0x80;
-  NR12_REG = 0xF3;
+  NR12_REG = translate_envelope(0xF3);
   NR51_REG = 0xF3;
   NR50_REG = 0x77;
 

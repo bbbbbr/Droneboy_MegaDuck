@@ -1,4 +1,5 @@
 #include "duty.h"
+#include "plat_sound.h"
 // Duty page
 
 void dutyKeypadController(void) {
@@ -305,13 +306,13 @@ void bPressedHandler(void) {
 void changNoiseCounterStep(void) {
   if (noiseStruct.counter_step == 1) {
     noiseStruct.counter_step = 0;
-    NR43_REG = noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4);
+    NR43_REG = translate_frequency(noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4));
     NR44_REG = 0x80; // restart channel
     set_bkg_tile_xy(0x11, 0x0F, 0x35); // left flip area
     set_bkg_tile_xy(0x12, 0x0F, 0x38); // right flip area
   } else {
     noiseStruct.counter_step = 1;
-    NR43_REG = noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4);
+    NR43_REG = translate_frequency(noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4));
     NR44_REG = 0x80;
     set_bkg_tile_xy(0x11, 0x0F, 0x36);
     set_bkg_tile_xy(0x12, 0x0F, 0x37);

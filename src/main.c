@@ -4,6 +4,8 @@
 #include "definitions.h"
 #include "globals.h"
 
+#include "plat_sound.h"
+
 // Declaration of global variables
 BYTE keys = 0;
 UBYTE previous_keys;
@@ -679,7 +681,7 @@ void init(void) {
   // https://gbdev.io/pandocs/Sound_Controller.html#sound-channel-1---tone--sweep
 
   // Volume envelope
-  NR12_REG = 0x08; //0x00 // 0=min volume, length ignored
+  NR12_REG = translate_envelope(0x08); //0x00 // 0=min volume, length ignored
   // Duty
   NR11_REG = 0x80; //0x80 // 50% square wave
   // Frequency
@@ -687,7 +689,7 @@ void init(void) {
 
   // square channel
   // https://gbdev.io/pandocs/Sound_Controller.html#sound-channel-2---tone
-  NR22_REG = 0x00;
+  NR22_REG = translate_envelope(0x00);
   NR21_REG = 0x80;
   updateSquareFreq( 1);
 
@@ -700,7 +702,7 @@ void init(void) {
   noiseStruct.dividing_ratio = 7; // 3 bits
   noiseStruct.counter_step = 1; // 1 = 7bits, 0 = 15 bits
   noiseStruct.clock_freq = noise_freq; // 4 bits
-  NR42_REG = 0x00;
+  NR42_REG = translate_envelope(0x00);
   NR41_REG = 0;
   updateNoiseFreq(noise_freq);
   NR44_REG = 0x80;
@@ -827,10 +829,10 @@ void init(void) {
   SHOW_SPRITES;
 
   // zombie volume mode init
-  NR12_REG = 0x08;
+  NR12_REG = translate_envelope(0x08);
   NR13_REG = (UBYTE)sweep_freq & 0xFF;
   NR14_REG = 0x80 | ((sweep_freq & 0x0700)>>8);
-  NR22_REG = 0x08;
+  NR22_REG = translate_envelope(0x08);
   NR23_REG = (UBYTE)square_freq & 0xFF;
   NR24_REG = 0x80 | ((square_freq & 0x0700)>>8);
 }

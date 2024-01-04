@@ -1,4 +1,5 @@
 #include "volume.h"
+#include "plat_sound.h"
 // Volume page
 
 // Keypad 
@@ -344,14 +345,19 @@ void updateSweepVolume(int volume) {
   // zombie mode volume https://gbdev.gg8.se/wiki/articles/Gameboy_sound_hardware#Obscure_Behavior
   if (volume > sweep_volume) {
     while (sweep_volume != volume) {
-      NR12_REG = 0x08;
+      NR12_REG = translate_envelope(0x08);
       sweep_volume++;
     }
   } else if (volume < sweep_volume) {
     while (sweep_volume != volume) {
     //afaikt this is the least clicky way to decrease volume
-      __asm 
-        ld a, #0x08
+      __asm
+        // Mega Duck has nybbles swapped for NR12, NR22, NR42 audio envelope registers
+        #ifdef MEGADUCK 
+            ld a, #0x80
+        #else
+            ld a, #0x08
+        #endif   
         ldh (#0xFF12),a
         ldh (#0xFF12),a
         ldh (#0xFF12),a
@@ -378,15 +384,20 @@ void updateSweepVolume(int volume) {
 void updateSquareVolume(int volume) {
   if (volume > square_volume) {
     while (square_volume != volume) {
-      NR22_REG = 0x08;
+      NR22_REG = translate_envelope(0x08);
       square_volume++;
     }
   } else if (volume < square_volume) {
     while (square_volume != volume) {
     //afaikt this is the least clicky way to decrease volume
-    // FF17 = NR22_REG  
+      // FF17 = NR22_REG  
       __asm 
-        ld a, #0x08
+        // Mega Duck has nybbles swapped for NR12, NR22, NR42 audio envelope registers
+        #ifdef MEGADUCK 
+            ld a, #0x80
+        #else
+            ld a, #0x08
+        #endif   
         ldh (#0xFF17),a
         ldh (#0xFF17),a
         ldh (#0xFF17),a
@@ -410,7 +421,7 @@ void updateSquareVolume(int volume) {
   }
   // UBYTE freqhigh;
   // UWORD freq;
-  // NR22_REG = volume;
+  // NR22_REG = translate_envelope(volume);
   // freq = (frequency_mode == 0) ? square_freq : frequencies[square_note];
   // freqhigh = (UBYTE)((freq & 0x0700)>>8);
   // NR24_REG = 0x80 | freqhigh; //restart the channel annars inte funkis
@@ -420,10 +431,10 @@ void updateSquareVolume(int volume) {
 void updateWaveVolume(int volume, int sample_index) {
 
     if (volume == 0) {
-      NR32_REG = 0x00;//turn off volume
+      NR32_REG = translate_volume(0x00);//turn off volume
       return;
     } else  {
-      NR32_REG = 0x20; // highest volume
+      NR32_REG = translate_volume(0x20); // highest volume
     }
     updateWaveToBeLoaded(volume, sample_index);
     loadWave();
@@ -525,7 +536,7 @@ void loadRampWave(int volume) {
 
 // update the noise
 void updateNoiseVolume(UBYTE volume) {
-  NR42_REG = volume;
-  //NR43_REG = noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4);
+  NR42_REG = translate_envelope(volume);
+  //NR43_REG = translate_frequency(noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4));
   NR44_REG = 0x80;
 }

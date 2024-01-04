@@ -1,4 +1,5 @@
 #include "frequency.h"
+#include "plat_sound.h"
 // Frequency page
 
 void frequencyKeypadController(void) {
@@ -296,7 +297,7 @@ void updateSweepFreq(int retrigger) {
     }
     NR13_REG = freqlow;
     if (retrigger == 1) {
-        NR12_REG = volumeValues[sweep_volume]; // set the current volume
+        NR12_REG = translate_envelope(volumeValues[sweep_volume]); // set the current volume
         NR14_REG = 0x80 | freqhigh; // retrigger 
     } else {
         NR14_REG = freqhigh;
@@ -314,7 +315,7 @@ void updateSquareFreq(int retrigger) {
     }
     NR23_REG = freqlow;
     if (retrigger == 1) {
-        NR22_REG = volumeValues[square_volume];
+        NR22_REG = translate_envelope(volumeValues[square_volume]);
         NR24_REG = 0x80 | freqhigh;
     } else {
         NR24_REG = freqhigh;
@@ -342,7 +343,7 @@ void updateWaveFreq(int retrigger) {
 
 void updateNoiseFreq(UBYTE new_freq) {
     noiseStruct.clock_freq = new_freq;//: 4 bits;
-    NR43_REG = noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4);
+    NR43_REG = translate_frequency(noiseStruct.dividing_ratio | (noiseStruct.counter_step << 3) | (noiseStruct.clock_freq << 4));
 }
 
 void updateNoiseNoteFreq(UBYTE new_freq) {
@@ -351,7 +352,7 @@ void updateNoiseNoteFreq(UBYTE new_freq) {
     noiseStruct.clock_freq = (int) ((new_freq & 0xF0) >> 4);
     noise_freq = noiseStruct.clock_freq;
     duty_fader_group[3].fader_position = noiseStruct.dividing_ratio;
-    NR43_REG = new_freq;
+    NR43_REG = translate_frequency(new_freq);
 }
 
 // print function for frequency mode
