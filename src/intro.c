@@ -2,7 +2,7 @@
 #include "tilesandbackgrounds.h"
 
 // Intro logo roll
-void intro() {
+void intro(void) {
   wait_vbl_done();
   NR52_REG = 0x80;
   NR11_REG = 0x80;
