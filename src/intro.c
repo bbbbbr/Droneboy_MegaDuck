@@ -12,8 +12,8 @@ void intro(void) {
   NR51_REG = 0xF3;
   NR50_REG = 0x77;
 
-  DISPLAY_OFF;
-  set_bkg_data(0, 31, splash);
+  display_off();
+  set_bkg_data(0, 32, splash);
   set_bkg_tiles(0x00, 0x00, 20, 29, splashbackground);
 
   SHOW_BKG;
