@@ -2,3 +2,4 @@ obj/
 *.ihx
 *.map
 *.noi
+*.sublime*
